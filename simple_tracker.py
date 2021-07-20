@@ -103,6 +103,26 @@ class AmazonAPI:
            
             return links
 
+    def check_price():
+        response = requests.get('https://www.amazon.in/Bose-SoundLink-Wireless-Around-Ear-Headphones/dp/B0117RGG8E/ref=sr_1_11?qid=1562395272&refinements=p_89%3ABose&s=electronics&sr=1-11', headers=headers)
+
+        soup = BeautifulSoup(response.content, 'html.parser')
+        soup.encode('utf-8')
+
+        title = soup.find(id= "productTitle").get_text()
+        price = soup.find(id = "priceblock_ourprice").get_text().replace(',', '').replace('₹', '').replace(' ', '').strip()
+        #print(price)
+
+        
+        converted_price = float(price[0:5])
+        print(converted_price)
+        if(converted_price < 20000):
+            send_mail()
+
+    print(title.strip())
+
+
+
     def get_products_info(self, links):
         asins = self.get_asins(links)
         products = []
