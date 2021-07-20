@@ -90,7 +90,7 @@ class AmazonAPI:
         element.send_keys(Keys.ENTER)
         time.sleep(2)  # wait to load page
         self.driver.get(f'{self.driver.current_url}{self.price_filter}')
-        print(f"Our url: {self.driver.current_url}")
+       
         time.sleep(2)  # wait to load page
         result_list = self.driver.find_elements_by_class_name('s-result-list')
         links = []
@@ -100,8 +100,7 @@ class AmazonAPI:
             links = [link.get_attribute('href') for link in results]
             return links
         except Exception as e:
-            print("Didn't get any products...")
-            print(e)
+           
             return links
 
     def get_products_info(self, links):
@@ -121,7 +120,9 @@ class AmazonAPI:
         product_short_url = self.shorten_url(asin)
         self.driver.get(f'{product_short_url}?language=en_GB')
         time.sleep(2)
+
         title = self.get_title()
+        name = self.get_title()
         seller = self.get_seller()
         price = self.get_price()
         if title and seller and price:
@@ -160,6 +161,7 @@ class AmazonAPI:
             try:
                 availability = self.driver.find_element_by_id('availability').text
                 if 'Available' in availability:
+                    print("Available")
                     price = self.driver.find_element_by_class_name('olp-padding-right').text
                     price = price[price.find(self.currency):]
                     price = self.convert_price(price)
